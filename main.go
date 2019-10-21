@@ -8,6 +8,7 @@ import (
 	"net"
 
 	"github.com/joho/godotenv"
+	utils "utils"
 )
 
 //Node is a node within zetanet
@@ -17,6 +18,7 @@ type Node struct {
 	Port    string
 	Type    string
 	Country string
+	Path 	string
 }
 
 // init is invoked before main()
@@ -29,11 +31,13 @@ func init() {
 
 func main() {
 	var config Config
-	config.Init(LoadEnv())
+	config.Init("./config/dn." + utils.LoadEnv() + ".yml")
 	if conn, err := net.Dial(config.Type, config.Host+":"+config.Port); err == nil {
 		fmt.Println("Connected to discovery node " + config.Name + " via " + config.Type + " endpoint " + config.Host + ":" + config.Port)
 
-		data, _ := json.Marshal(config)
+		var stConfig Config
+		stConfig.Init("./config/st." + utils.LoadEnv() + ".yml")
+		data, _ := json.Marshal(stConfig)
 		// send to socket
 		conn.Write(append(data, '\n'))
 
@@ -45,6 +49,8 @@ func main() {
 			fmt.Println("Node: " + string(message))
 			save(conn, message)
 		}
+	}else {
+		fmt.Println(err)
 	}
 }
 
