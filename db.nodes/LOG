@@ -1,0 +1,39 @@
+=============== Oct 31, 2019 (CST) ===============
+15:16:18.453323 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:16:18.531451 db@open opening
+15:16:18.532450 version@stat F·[] S·0B[] Sc·[]
+15:16:18.588420 db@janitor F·2 G·0
+15:16:18.588420 db@open done T·56.9692ms
+=============== Oct 31, 2019 (CST) ===============
+22:29:11.388683 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:29:11.404641 version@stat F·[] S·0B[] Sc·[]
+=============== Oct 31, 2019 (CST) ===============
+22:30:39.104512 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:30:39.106507 version@stat F·[] S·0B[] Sc·[]
+=============== Oct 31, 2019 (CST) ===============
+22:31:10.083996 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:31:10.085967 version@stat F·[] S·0B[] Sc·[]
+=============== Oct 31, 2019 (CST) ===============
+22:39:44.234049 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+22:39:44.235046 version@stat F·[] S·0B[] Sc·[]
+=============== Nov 4, 2019 (CST) ===============
+02:35:23.632630 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+02:35:23.650582 version@stat F·[] S·0B[] Sc·[]
+=============== Nov 4, 2019 (CST) ===============
+02:35:47.417851 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+02:35:47.419845 version@stat F·[] S·0B[] Sc·[]
+=============== Nov 4, 2019 (CST) ===============
+02:37:34.122658 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+02:37:34.123656 version@stat F·[] S·0B[] Sc·[]
+=============== Nov 4, 2019 (CST) ===============
+02:47:45.788128 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+02:47:45.795130 version@stat F·[] S·0B[] Sc·[]
+=============== Nov 4, 2019 (CST) ===============
+04:10:22.082985 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+04:10:22.105592 version@stat F·[] S·0B[] Sc·[]
+=============== Nov 4, 2019 (CST) ===============
+05:21:31.186381 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+05:21:31.187309 version@stat F·[] S·0B[] Sc·[]
+=============== Nov 4, 2019 (CST) ===============
+05:22:50.353161 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+05:22:50.357360 version@stat F·[] S·0B[] Sc·[]

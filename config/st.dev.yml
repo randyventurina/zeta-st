@@ -1,7 +1,8 @@
 --- 
 host: localhost
-port: 5009
+port: 5011
 type: tcp
 country: PHL
-name: PHL1009
+name: PHL1011
 path: .zet-st
+key: 38f0e152-39a4-4ef0-896f-fc1debcd3e7c
