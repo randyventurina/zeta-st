@@ -1,0 +1,2 @@
+
+SET PATH=%CD%;%PATH%

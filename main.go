@@ -8,8 +8,8 @@ import (
 	"log"
 	"net"
 	"os"
-	utils "utils"
 	"path/filepath"
+	utils "utils"
 
 	"github.com/joho/godotenv"
 	"github.com/syndtr/goleveldb/leveldb"
@@ -111,26 +111,37 @@ func command() {
 //saves the content-address to local leveldb
 //copy the file to universe folder
 func add(file string, push bool) string {
-	
 
-	addToUniverse(file)	
+	copyToUniverse(file)
 
 	// save hash to local leveldb
 	if push {
 		hash, err := saveHashLocally(file)
-		
 		if err == nil {
+			err = saveHashGlobally(file, hash)
 			return hash
 		}
-
-		saveHashGlobally()
 	}
 
 	return "content hashing: failed"
 }
 
-func saveHashGlobally() (string, error){
-	return "", nil
+func saveHashGlobally(file string, hash string) error {
+	config, _ := InitConfig("./config/dn." + utils.LoadEnv() + ".yml")
+	conn, err := net.Dial(config.Type, config.Host+":"+config.Port)
+
+	if err == nil {
+		fmt.Println("Sending data to discovery node " + config.Name + " via " + config.Type + " endpoint " + config.Host + ":" + config.Port)
+
+		hash, _ := utils.Hash("md5", file)
+		desc, _ := describeInBytes(file)
+
+		// send to socket
+		msg := append(append([]byte(Command.Add), []byte(hash)...), desc...)
+		conn.Write(append(msg, '\n'))
+	}
+
+	return err
 }
 
 //save a content hash entry to leveldb
@@ -142,28 +153,21 @@ func saveHashLocally(file string) (string, error) {
 
 	db.Put([]byte(hash), desc, nil)
 	db.Close()
-	
+
 	if err == nil {
-		return hash, err 
+		return hash, err
 	}
 
 	return hash, err
 }
 
-func addToUniverse(file string) bool { 
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-	exPath := filepath.Dir(ex)
-	fileName := filepath.Base(file)
-	utils.Copy(file, filepath.Join(exPath, "/universe", fileName) )
-	return true
+func copyToUniverse(file string) error {
+	return utils.Copy(file, filepath.Join(utils.GetExePath(), "/universe", filepath.Base(file)))
 }
 
 //hashes the self-describing part of content-address
-func hashDescription(desc *Desc) string{
-	b, _:= json.Marshal(desc)
+func hashDescription(desc *Desc) string {
+	b, _ := json.Marshal(desc)
 	return utils.HashContent(b)
 }
 
@@ -177,7 +181,7 @@ func describeInObject(file string) (*Desc, error) {
 
 	fi, err := f.Stat()
 	if err != nil {
-	  // Could not obtain stat, handle error
+		// Could not obtain stat, handle error
 	}
 
 	var stConfig Config
@@ -185,12 +189,12 @@ func describeInObject(file string) (*Desc, error) {
 
 	endpoint := stConfig.Host + ":" + stConfig.Port
 
-	desc := Desc{fp:file, ha:"md5", le:string(fi.Size()), ep:endpoint }
+	desc := Desc{fp: file, ha: "md5", le: string(fi.Size()), ep: endpoint}
 
 	return &desc, nil
 }
 
-func describeInBytes(file string) ([]byte, error){
+func describeInBytes(file string) ([]byte, error) {
 	f, err := os.Open(file)
 
 	if err != nil {
@@ -199,7 +203,7 @@ func describeInBytes(file string) ([]byte, error){
 
 	fi, err := f.Stat()
 	if err != nil {
-	  // Could not obtain stat, handle error
+		// Could not obtain stat, handle error
 	}
 
 	var stConfig Config
@@ -207,9 +211,9 @@ func describeInBytes(file string) ([]byte, error){
 
 	endpoint := stConfig.Host + ":" + stConfig.Port
 
-	desc := Desc{fp:file, ha:"md5", le:string(fi.Size()), ep:endpoint }
+	desc := Desc{fp: file, ha: "md5", le: string(fi.Size()), ep: endpoint}
 
-	b, _:= json.Marshal(desc)
+	b, _ := json.Marshal(desc)
 
 	return b, nil
 }

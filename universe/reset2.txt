@@ -1,0 +1,2 @@
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('MyNewPass');

@@ -98,3 +98,18 @@
 05:22:50.603543 table@build exiting
 05:22:50.603543 table@build revert @23
 05:22:50.623606 db@close done T·31.7795ms
+=============== Nov 4, 2019 (CST) ===============
+19:12:47.067598 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+19:12:47.096562 version@stat F·[6 1] S·1KiB[894B 149B] Sc·[1.50 0.00]
+19:12:47.096562 db@open opening
+19:12:47.097518 journal@recovery F·1
+19:12:47.102504 journal@recovery recovering @21
+19:12:47.152411 memdb@flush created L0@23 N·1 S·149B "684..6b0,v15":"684..6b0,v15"
+19:12:47.159356 version@stat F·[7 1] S·1KiB[1KiB 149B] Sc·[1.75 0.00]
+19:12:47.239140 db@janitor F·10 G·0
+19:12:47.239140 db@open done T·142.5789ms
+19:12:47.247213 table@compaction L0·4 -> L1·1 S·745B Q·16
+19:12:47.358871 table@build created L1@26 N·1 S·149B "684..6b0,v15":"684..6b0,v15"
+19:12:47.358871 table@commit exiting
+19:12:47.358871 db@close closing
+19:12:47.380797 db@close done T·21.9265ms
