@@ -9,11 +9,13 @@ import (
 	"net"
 	"os"
 	"path/filepath"
-	utils "utils"
 
 	"github.com/joho/godotenv"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
+
+	common "zetanet.io/common"
+	utils "zetanet.io/utils"
 )
 
 //Node is a node within zetanet
@@ -46,6 +48,53 @@ func main() {
 	register()
 	command()
 }
+
+// //register to discovery node. registration is required, this is to make sure all nodes are discovered within the network
+func register() {
+
+	//registration to disovery node must run once
+	o := opt.Options{ErrorIfExist: false}
+	db, err := leveldb.OpenFile("db.nodes", &o)
+	
+
+	// run once
+	if err == nil {
+		config, _ := common.InitConfig("./config/dn." + utils.LoadEnv() + ".yml")
+		fmt.Println("CONFIG:",config)
+		if conn, err := net.Dial(config.Type, config.Host+":"+config.Port); err == nil {
+			stConfig, _ := common.InitConfig("./config/st." + utils.LoadEnv() + ".yml")
+			fmt.Println("STCONFIG:",config)
+
+			data, _ := json.Marshal(stConfig)
+
+			requestData := [][]byte{
+				[]byte(common.Command.Reg),
+				data,
+				[]byte("\n"),
+			}
+			fmt.Println(len(requestData))
+			request := utils.ConcatArrays(requestData)
+
+
+			fmt.Println("Connected to discovery node " + config.Name + " via " + config.Type + " endpoint " + config.Host + ":" + config.Port)
+
+			// send to socket
+			conn.Write(request)
+
+			// listen for reply
+			reader := bufio.NewReader(conn)
+			scanner := bufio.NewScanner(reader)
+			for scanner.Scan() {
+				message := scanner.Bytes()
+				saveNode(db, conn, message)
+			}
+		} else {
+			fmt.Println(err)
+		}
+	}
+}
+
+
 
 func command() {
 	//add subcommand
@@ -127,7 +176,7 @@ func add(file string, push bool) string {
 }
 
 func saveHashGlobally(file string, hash string) error {
-	config, _ := InitConfig("./config/dn." + utils.LoadEnv() + ".yml")
+	config, _ := common.InitConfig("./config/dn." + utils.LoadEnv() + ".yml")
 	conn, err := net.Dial(config.Type, config.Host+":"+config.Port)
 
 	if err == nil {
@@ -137,7 +186,7 @@ func saveHashGlobally(file string, hash string) error {
 		desc, _ := describeInBytes(file)
 
 		// send to socket
-		msg := append(append([]byte(Command.Add), []byte(hash)...), desc...)
+		msg := append(append([]byte(common.Command.Add), []byte(hash)...), desc...)
 		conn.Write(append(msg, '\n'))
 	}
 
@@ -184,8 +233,10 @@ func describeInObject(file string) (*Desc, error) {
 		// Could not obtain stat, handle error
 	}
 
-	var stConfig Config
-	stConfig.Init("./config/st." + utils.LoadEnv() + ".yml")
+	// var stConfig Config
+	// stConfig.Init("./config/st." + utils.LoadEnv() + ".yml")
+
+	stConfig, _ := common.InitConfig("./config/st." + utils.LoadEnv() + ".yml")
 
 	endpoint := stConfig.Host + ":" + stConfig.Port
 
@@ -206,8 +257,9 @@ func describeInBytes(file string) ([]byte, error) {
 		// Could not obtain stat, handle error
 	}
 
-	var stConfig Config
-	stConfig.Init("./config/st." + utils.LoadEnv() + ".yml")
+	// var stConfig Config
+	// stConfig.Init("./config/st." + utils.LoadEnv() + ".yml")
+	stConfig, _ := common.InitConfig("./config/st." + utils.LoadEnv() + ".yml")
 
 	endpoint := stConfig.Host + ":" + stConfig.Port
 
@@ -216,39 +268,6 @@ func describeInBytes(file string) ([]byte, error) {
 	b, _ := json.Marshal(desc)
 
 	return b, nil
-}
-
-//register to discovery node. registration is required, this is to make sure all nodes are discovered within the network
-func register() {
-
-	// registration to disovery node must run once
-	o := opt.Options{ErrorIfExist: true}
-	db, err := leveldb.OpenFile("db.nodes", &o)
-
-	// run once
-	if err == nil {
-		var config Config
-		config.Init("./config/dn." + utils.LoadEnv() + ".yml")
-		if conn, err := net.Dial(config.Type, config.Host+":"+config.Port); err == nil {
-			fmt.Println("Connected to discovery node " + config.Name + " via " + config.Type + " endpoint " + config.Host + ":" + config.Port)
-
-			var stConfig Config
-			stConfig.Init("./config/st." + utils.LoadEnv() + ".yml")
-			data, _ := json.Marshal(stConfig)
-			// send to socket
-			conn.Write(append(data, '\n'))
-
-			// listen for reply
-			reader := bufio.NewReader(conn)
-			scanner := bufio.NewScanner(reader)
-			for scanner.Scan() {
-				message := scanner.Bytes()
-				saveNode(db, conn, message)
-			}
-		} else {
-			fmt.Println(err)
-		}
-	}
 }
 
 //save initial list of nodes upon successful connection

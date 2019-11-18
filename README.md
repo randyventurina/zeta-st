@@ -19,7 +19,10 @@ Go to zeta-st, execute the following command:
 
 
 #SECTION 2: Command line tool for zeta protocol
+zeta file="test.txt" -push
 
+-push
+    sends add command, with equivalent bytes 
 
 #SECTION 3: Installation
 1. add zeta.exe application directory to User Environment PATH variable

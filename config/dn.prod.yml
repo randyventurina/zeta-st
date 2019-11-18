@@ -1,6 +1,8 @@
 --- 
+name: dn-ph001
 host: localhost
 port: 8888
 type: tcp
 country: ph
-name: dn-ph001
+path: .zet-st
+key: ec264784-70cb-4f32-9e39-05c35747e7ab
